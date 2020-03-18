@@ -5,5 +5,8 @@ namespace CoffeeSlotMachine.Core.Contracts
 {
     public interface ICoinRepository
     {
+        IEnumerable<Coin> GetAllContainedCoins();
+
+        string GetAllContainedCoinsAsString();
     }
 }
