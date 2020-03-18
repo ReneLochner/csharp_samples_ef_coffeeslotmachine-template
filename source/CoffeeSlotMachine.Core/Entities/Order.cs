@@ -8,8 +8,7 @@ namespace CoffeeSlotMachine.Core.Entities
     /// Bestellung verwaltet das bestellte Produkt, die eingeworfenen Münzen und
     /// die Münzen die zurückgegeben werden.
     /// </summary>
-    public class Order : EntityObject
-    {
+    public class Order : EntityObject {
         /// <summary>
         /// Datum und Uhrzeit der Bestellung
         /// </summary>
@@ -29,12 +28,12 @@ namespace CoffeeSlotMachine.Core.Entities
         /// <summary>
         /// Summe der eingeworfenen Cents.
         /// </summary>
-        public int ThrownInCents => -1;
+        public int ThrownInCents { get; set; }
 
         /// <summary>
         /// Summe der Cents die zurückgegeben werden
         /// </summary>
-        public int ReturnCents => -1;
+        public int ReturnCents { get; set; }
 
 
         public int ProductId { get; set; }
@@ -46,7 +45,7 @@ namespace CoffeeSlotMachine.Core.Entities
         /// Kann der Automat mangels Kleingeld nicht
         /// mehr herausgeben, wird der Rest als Spende verbucht
         /// </summary>
-        public int DonationCents => -1;
+        public int DonationCents { get; set; }
 
         /// <summary>
         /// Münze wird eingenommen.
@@ -55,7 +54,56 @@ namespace CoffeeSlotMachine.Core.Entities
         /// <returns>isFinished ist true, wenn der Produktpreis zumindest erreicht wurde</returns>
         public bool InsertCoin(int coinValue)
         {
-            throw new NotImplementedException();
+            int productPrice = Product.PriceInCents;
+            ThrownInCents += coinValue;
+            ReturnCents = ThrownInCents - productPrice;
+            int sum = ReturnCents;
+            while(sum > 0)
+            {
+                if (sum - 200 >= 0)
+                {
+                    sum -= 200;
+                    ReturnCoinValues += "200;";
+                }
+                else if (sum - 100 >= 0)
+                {
+                    sum -= 100;
+                    ReturnCoinValues += "100;";
+                }
+                else if (sum - 50 >= 0)
+                {
+                    sum -= 50;
+                    ReturnCoinValues += "50;";
+                }
+                else if (sum - 20 >= 0)
+                {
+                    sum -= 20;
+                    ReturnCoinValues += "20;";
+                }
+                else if (sum - 10 >= 0)
+                {
+                    sum -= 10;
+                    ReturnCoinValues += "10;";
+                }
+                else if (sum - 5 >= 0)
+                {
+                    sum -= 5;
+                    ReturnCoinValues += "5;";
+                }
+                else if (sum - 2 >= 0)
+                {
+                    sum -= 2;
+                    ReturnCoinValues += "2;";
+                }
+                else if (sum - 1 >= 0)
+                {
+                    sum -= 1;
+                    ReturnCoinValues += "1;";
+                }
+            }
+            ReturnCoinValues = ReturnCoinValues.Remove(ReturnCoinValues.Length - 1, 1);
+            
+            return coinValue >= Product.PriceInCents;
         }
 
         /// <summary>
