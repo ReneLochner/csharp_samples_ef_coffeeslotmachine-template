@@ -14,5 +14,14 @@ namespace CoffeeSlotMachine.Persistence
             _dbContext = dbContext;
         }
 
+        public IEnumerable<Coin> GetAllContainedCoins()
+        {
+            return _dbContext.Coins.OrderByDescending(coin => coin.CoinValue).ToArray();
+        }
+
+        public string GetAllContainedCoinsAsString()
+        {
+            return GetAllContainedCoins().ToString();
+        }
     }
 }
